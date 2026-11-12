@@ -1,0 +1,19 @@
+{
+  "name": "lenslab-studio-bdf-group-05",
+  "version": "1.0.0",
+  "description": "LensLab Studio - Camera Rental Backend System for BDF Group Assignment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node database/seed.js",
+    "test": "node test-runner.js"
+  },
+  "keywords": ["express", "sqlite3", "rest-api", "bdf", "lenslab"],
+  "author": "Group 5 - CSE-QE2A",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.3.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^6.0.1"
+  }
+}
