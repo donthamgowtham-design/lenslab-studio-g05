@@ -1,13 +1,31 @@
 // controllers/cameraController.js
-// Member 3: Basic Camera CRUD Handlers
+// Member 3 (CRUD Handlers) & Member 4 (Query Search Logic)
 
 const { getDatabase } = require('../database/db');
 
-// 1. GET /cameras - Get all cameras
+// 1. GET /cameras - Get all cameras or filter by query parameters (e.g. ?kind=DSLR or ?search=Sony)
 async function getAllCameras(req, res) {
     try {
         const db = await getDatabase();
-        const cameras = await db.all('SELECT * FROM cameras ORDER BY id ASC');
+        const { kind, search } = req.query;
+
+        let query = 'SELECT * FROM cameras WHERE 1=1';
+        const params = [];
+
+        // Member 4: Search by query parameter (e.g., kind)
+        if (kind) {
+            query += ' AND LOWER(kind) = LOWER(?)';
+            params.push(kind.trim());
+        }
+
+        if (search) {
+            query += ' AND (LOWER(name) LIKE LOWER(?) OR LOWER(kind) LIKE LOWER(?))';
+            params.push(`%${search.trim()}%`, `%${search.trim()}%`);
+        }
+
+        query += ' ORDER BY id ASC';
+
+        const cameras = await db.all(query, params);
         return res.status(200).json(cameras);
     } catch (error) {
         console.error('Error fetching cameras:', error);
@@ -66,6 +84,7 @@ async function updateCamera(req, res) {
         const { id } = req.params;
         const { name, kind, status } = req.body;
 
+        // Check if camera exists
         const existing = await db.get('SELECT * FROM cameras WHERE id = ?', [id]);
         if (!existing) {
             return res.status(404).json({ error: `Camera with ID ${id} not found` });
