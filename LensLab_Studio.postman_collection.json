@@ -1,0 +1,281 @@
+{
+  "info": {
+    "_postman_id": "bdf-lenslab-studio-g05-collection",
+    "name": "LensLab Studio - BDF Group Assignment (ST-CSEQE2A-G05)",
+    "description": "Postman API Collection for LensLab Studio Camera Rental System. Includes all CRUD endpoints, Query search, Join endpoint, Input validation, and Twist tests (No duplicate names).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Twist Rule Verification (No Duplicate Names)",
+      "item": [
+        {
+          "name": "Test 1: Add Camera 3 (201 Created)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Camera 3\",\n  \"kind\": \"Mirrorless\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/cameras",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras"]
+            }
+          }
+        },
+        {
+          "name": "Test 2: Add 'camera 3' Duplicate (409 Conflict)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"camera 3\",\n  \"kind\": \"DSLR\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/cameras",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras"]
+            }
+          }
+        },
+        {
+          "name": "Test 3: Rename Another to Duplicate Name (409 Conflict)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"CAMERA 3\",\n  \"kind\": \"Mirrorless\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/cameras/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cameras CRUD & Search",
+      "item": [
+        {
+          "name": "Get All Cameras (200 OK)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cameras",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras"]
+            }
+          }
+        },
+        {
+          "name": "Search Cameras by Query Parameter - Kind (200 OK)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cameras?kind=Mirrorless",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras"],
+              "query": [
+                {
+                  "key": "kind",
+                  "value": "Mirrorless"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Camera by ID (200 OK)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cameras/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras", "1"]
+            }
+          }
+        },
+        {
+          "name": "Add Camera with Validation Failure (400 Bad Request)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lumix S5 II\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/cameras",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras"]
+            }
+          }
+        },
+        {
+          "name": "Update Camera (200 OK)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sony FX3 Cinema Updated\",\n  \"kind\": \"Cinema\",\n  \"status\": \"available\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/cameras/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras", "2"]
+            }
+          }
+        },
+        {
+          "name": "Delete Camera (200 OK)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cameras/4",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cameras", "4"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rentals & Join Endpoint",
+      "item": [
+        {
+          "name": "Get Rentals with Joined Photographer & Camera (200 OK)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/rentals",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["rentals"]
+            }
+          }
+        },
+        {
+          "name": "Create Rental (201 Created)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"photographer_id\": 3,\n  \"camera_id\": 2,\n  \"rental_date\": \"2026-11-20\",\n  \"return_date\": \"2026-11-22\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/rentals",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["rentals"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Photographers",
+      "item": [
+        {
+          "name": "Get All Photographers (200 OK)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/photographers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["photographers"]
+            }
+          }
+        },
+        {
+          "name": "Add Photographer (201 Created)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pooja Hegde\",\n  \"phone\": \"9845012345\",\n  \"email\": \"pooja@lenslab.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/photographers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["photographers"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
